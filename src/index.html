@@ -102,7 +102,7 @@
                     activeMenu = $('#' + activeRow.data('id')).removeClass('none');
                     return; // 这里必须return，否则if语句里的代码执行结束后继续向后执行，activeRow变量undefined，会报错
                 }
-                // debounce去抖：事件触发时，timer存在，说明后面的定时器回到函数没有执行到timer = null，即没有执行切换，就清除定时器队列，保证只执行一次切换，也就是最后一次
+                // debounce去抖原理：在定时器回调函数最后timer = null，事件触发时，如果timer存在，说明后面的定时器回调函数没有执行到timer = null，即没有执行切换，就清除定时器队列，保证只执行一次切换，也就是最后一次
                 if (timer) {
                     clearTimeout(timer);
                 }
