@@ -102,6 +102,10 @@
                     activeMenu = $('#' + activeRow.data('id')).removeClass('none');
                     return; // 这里必须return，否则if语句里的代码执行结束后继续向后执行，activeRow变量undefined，会报错
                 }
+                // debounce去抖：事件触发时，timer存在，说明后面的定时器回到函数没有执行到timer = null，即没有执行切换，就清除定时器队列，保证只执行一次切换，也就是最后一次
+                if (timer) {
+                    clearTimeout(timer);
+                }
                 timer = setTimeout(function(){
                     // 如果鼠标在子菜单里，不进行子菜单的切换，直接return
                     if (mouseInSub) {
@@ -113,6 +117,7 @@
                     // 将新移入的li赋值给activeRow
                     activeRow = $(e.target).addClass('active');
                     activeMenu = $('#' + activeRow.data('id')).removeClass('none');
+                    timer = null;
                 }, 300)
                 
             });
