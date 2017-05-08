@@ -79,11 +79,22 @@
             }).on('mouseleave', function(e) {
                 /* Act on the event */
                 mouseInSub = false;
-            });;
+            });
+            var mouseTrack = []; // 记录鼠标位置的数组
+            var moveHandler = function(e) {
+                mouseTrack.push({
+                    x: e.pageX,
+                    y: e.pageY
+                })
+                if (mouseTrack.length > 3) {
+                    mouseTrack.shift()
+                }
+            }
             // 给整个菜单div绑定事件而不是一级菜单，否则鼠标离开一级菜单进入二级菜单会导致二级菜单不显示
             $('#wrap').on('mouseenter', function(e) {
                 // 鼠标移入一级菜单时让二级菜单显示
                 sub.removeClass('none');
+                $(document).on('mousemove', moveHandler);
             }).on('mouseleave', function(e) {
                 // 鼠标移出一级菜单时让二级菜单和子菜单内容不显示
                 sub.addClass('none');
@@ -95,6 +106,7 @@
                     activeMenu.addClass('none');
                     activeMenu = null;
                 }
+                $(document).off('mousemove', moveHandler);
             }).on('mouseenter', 'li', function(e) {
                 // 初始时鼠标没有移入一级菜单，activeRow未定义
                 if (!activeRow) {
