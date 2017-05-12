@@ -81,6 +81,7 @@
                 mouseInSub = false;
             });
             var mouseTrack = []; // 记录鼠标位置的数组
+            // 结合使用push和shift可以模拟队列，先进先出FIFO
             var moveHandler = function(e) {
                 mouseTrack.push({
                     x: e.pageX,
@@ -118,6 +119,11 @@
                 if (timer) {
                     clearTimeout(timer);
                 }
+                // 鼠标当前坐标
+                var currMousePos = mouseTrack[mouseTrack.length - 1];
+                // 鼠标之前的位置
+                var leftCorner = mouseTrack[mouseTrack.length - 2];
+
                 timer = setTimeout(function(){
                     // 如果鼠标在子菜单里，不进行子菜单的切换，直接return
                     if (mouseInSub) {
