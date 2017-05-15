@@ -66,6 +66,7 @@
         </div>
     </div>
     <script src="//apps.bdimg.com/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src='script/function.js'></script>
     <script>
         $(document).ready(function() {
             var sub = $('#sub');
@@ -94,7 +95,7 @@
             // 给整个菜单div绑定事件而不是一级菜单，否则鼠标离开一级菜单进入二级菜单会导致二级菜单不显示
             $('#wrap').on('mouseenter', function(e) {
                 // 鼠标移入一级菜单时让二级菜单显示
-                sub.removeClass('none');
+                
                 $(document).on('mousemove', moveHandler);
             }).on('mouseleave', function(e) {
                 // 鼠标移出一级菜单时让二级菜单和子菜单内容不显示
@@ -109,6 +110,7 @@
                 }
                 $(document).off('mousemove', moveHandler);
             }).on('mouseenter', 'li', function(e) {
+                sub.removeClass('none');
                 // 初始时鼠标没有移入一级菜单，activeRow未定义
                 if (!activeRow) {
                     activeRow = $(e.target).addClass('active');
@@ -123,21 +125,32 @@
                 var currMousePos = mouseTrack[mouseTrack.length - 1];
                 // 鼠标之前的位置
                 var leftCorner = mouseTrack[mouseTrack.length - 2];
-
-                timer = setTimeout(function(){
-                    // 如果鼠标在子菜单里，不进行子菜单的切换，直接return
-                    if (mouseInSub) {
-                        return;
-                    }
-                    // 鼠标已经移入过一级菜单，从当前activeRow移到另一个li
-                    activeRow.removeClass('active');
-                    activeMenu.addClass('none');
-                    // 将新移入的li赋值给activeRow
-                    activeRow = $(e.target).addClass('active');
-                    activeMenu = $('#' + activeRow.data('id')).removeClass('none');
-                    timer = null;
-                }, 300)
-                
+                // 是否需要延迟
+                var delay = needDelay(sub, leftCorner, currMousePos)
+                if (delay) {
+                    timer = setTimeout(function(){
+                        // 如果鼠标在子菜单里，不进行子菜单的切换，直接return
+                        if (mouseInSub) {
+                            return;
+                        }
+                        // 鼠标已经移入过一级菜单，从当前activeRow移到另一个li
+                        activeRow.removeClass('active');
+                        activeMenu.addClass('none');
+                        // 将新移入的li赋值给activeRow
+                        activeRow = $(e.target).addClass('active');
+                        activeMenu = $('#' + activeRow.data('id')).removeClass('none');
+                        timer = null;
+                    }, 300)
+                } else {
+                    var prevActiveRow = activeRow
+                    var prevActiveMenu = activeMenu
+                    activeRow = $(e.target)
+                    activeMenu = $('#' + activeRow.data('id'))
+                    prevActiveRow.removeClass('active')
+                    prevActiveMenu.addClass('none')
+                    activeRow.addClass('active');
+                    activeMenu.removeClass('none');
+                }
             });
         });
     </script>
