@@ -1,0 +1,2 @@
+function sameSign(t,r){return(t^r)>=0}function vector(t,r){return{x:r.x-t.x,y:r.y-t.y}}function vectorProduct(t,r){return t.x*r.y-r.x*t.y}function isPointInTrangle(t,r,e,n){var o=vector(t,r),c=vector(t,e),u=vector(t,n),i=vectorProduct(o,c),v=vectorProduct(c,u),f=vectorProduct(u,o);return sameSign(i,v)&&sameSign(v,f)}function needDelay(t,r,e){var n=t.offset(),o={x:n.left,y:n.top},c={x:n.left,y:n.top+t.height()};return isPointInTrangle(e,r,o,c)}
+//# sourceMappingURL=function.js.map

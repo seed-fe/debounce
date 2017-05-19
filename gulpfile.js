@@ -35,7 +35,7 @@ gulp.task('watchsass', function() {
             // 编译SASS，outputStyle选项表示输出CSS的风格，默认是nested，对sass里的嵌套在编译成CSS后也会缩进，expanded会在输出CSS的每一个选择器设置之间空一行，compact也在每个选择器之间空一行，但是每个选择器的样式设置都只写在一行里—（就是花括号里的所有样式设置都写在一行），compressed输出压缩后的CSS
             plugins.sass({outputStyle: 'expanded'}),
             // 添加浏览器前缀，注意这一步要放到编译Sass的后面，否则Sass文件中'//'开头的注释编译会报错
-            plugins.autoprefixer(['last 2 Chrome versions', 'Firefox > 20', 'ie 6-8', 'last 2 Opera versions', 'last 2 Safari versions']),
+            plugins.autoprefixer(['last 2 Chrome versions', 'Firefox > 20', 'ie >= 8', 'last 2 Opera versions', 'Safari >= 5']),
             plugins.sourcemaps.write('./'),
             // 输出到src/css
             gulp.dest(paths.distDir),
@@ -81,7 +81,7 @@ gulp.task('minifycss', function() {
       .pipe(plugins.sourcemaps.init())
       .pipe(plugins.autoprefixer({
         // 设置支持的浏览器，这里是主要浏览器的最新两个版本
-        browsers: 'last 2 versions'
+        browsers: ['last 2 Chrome versions', 'Firefox > 20', 'ie >= 8', 'last 2 Opera versions', 'Safari >= 5']
       }))
       .pipe(cleanCSS())
       .pipe(plugins.sourcemaps.write('./'))
